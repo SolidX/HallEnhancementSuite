@@ -1,25 +1,47 @@
-//Add Message minimization feature
-$('li.hall-listview-li>cite').css("display", "inline");
-$('li.hall-listview-li>cite').css("padding-left", "3px");
-$('li.hall-listview-li>cite').before("<span class='hes-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
-$("span.hes-toggle").on("click", function(evt) {
-	$(this).parent().find("div.msg").toggle();
-});
-
 //Add HES overlay
-$("div#doc").append("<div id='hesOverlay' style='position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 10000; background-color: #000; opacity: 0.6;'></div>")
+$("div#doc").append("<div id='hesOverlay' style='position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 10000; background-color: #000; opacity: 0.6;'></div>");
 $("div#hesOverlay").hide();
-$("div#hesOverlay").on("keypress", function (evt) {
+$(document).on("keypress", function(evt) {
 	if (evt.which == 13) {
-		$("div#hesOverlay").empty();
 		$("div#hesOverlay").hide();
+		$("div#hesOverlay").empty();
 	}
 });
 
+/*Initialize for currently displayed messages*/
+//Message Minimization
+$('li.hall-listview-li>cite').not('.hes-msg-minimizer').css("display", "inline").css("padding-left", "3px");
+$('li.hall-listview-li>cite').not('.hes-msg-minimizer').addClass('hes-msg-minimizer');
+$('li.hall-listview-li>cite').not('.hes-msg-minimizer').before("<span class='hes-msg-minimizer-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
+
+
 //Green Texting
-$("div#doc").on("DOMNodeInserted", "li.hall-listview-li>div.msg", function(evt) {
+$("li.hall-listview-li>div.msg").each(function() {
 	if ($(this).text().trim()[0] == '>') {
 		$(this).css("color", "#789922").css("font-family", "Courier New");
+	}
+});
+	
+/*Handle New Messages*/
+//Add Message minimization feature
+$("div#doc").on('click', "span.hes-msg-minimizer-toggle", function(evt) {
+	$(this).parent().find("div.msg").toggle();
+});
+
+$("div#doc").on("DOMNodeInserted", "li.hall-listview-li", function(evt) {
+	var speaker = $(this).children('cite');
+	var message = $(this).children('div.msg');
+	
+	//Message minimization
+	if (speaker.length > 0 && !speaker.is(".hes-msg-minimizer")){
+		speaker.addClass('hes-msg-minimizer');
+		speaker.css("display", "inline").css("padding-left", "3px");
+		speaker.before("<span class='hes-msg-minimizer-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
+	}
+	
+	//Green Texting
+	if (message.text().trim()[0] == '>') {
+		message.css("color", "#789922").css("font-family", "Courier New");
 	}
 });
 
@@ -35,5 +57,5 @@ $("div#doc").on("DOMNodeInserted", "li.hall-listview-li>div.msg", function(evt) 
 // });
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.3a");
-// $('#content div.hall-listview-viewport>ol.hall-listview-chat').append('<li class="hall-listview-li" data-type="Comment"><cite>Hall Enhancement Suite</cite><time class="" datetime="' + new Date().toISOString() + '"><div class="msg">Rejoice peasant, for the Hall Enhancement Suite has come to enhance your life!</div></li>');
+console.log("Loaded Hall Enhancement Suite 0.3b");
+
