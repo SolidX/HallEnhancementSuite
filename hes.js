@@ -12,7 +12,7 @@ $("li.hall-listview-li>div.msg").each(function() {
 });
 
 //SFW Mode (hides images)
-$("div.navbar>ul.nav.btn-group.pull-right>li:first").before("<li><a class='btn' id='hes-sfw-mode' data-toggle='tipsy' original-title='Click to toggle SFW mode.'><div class='presence connected-busy'><i class='i'></i></div>SFW Mode</a></li>");
+$("div.navbar>ul.nav.btn-group.pull-right").prepend("<li><a class='btn' id='hes-sfw-mode' data-toggle='tipsy' original-title='Click to toggle SFW mode.'><div class='presence connected-busy'><i class='i'></i></div>SFW Mode</a></li>");
 /*End HES Initialization*/
 
 /*Handle New Messages*/
@@ -56,6 +56,7 @@ $("a#hes-sfw-mode").on("click", function(evt) {
 	evt.stopPropagation();
 	var indicator = $(this).children('div');
 	$('li.hall-listview-li>a.image-embed').toggle();
+	$('li.hall-listview-li>a.video_embed').toggle();
 	if (indicator.is('.connected-busy')) {
 		indicator.removeClass('connected-busy');
 		indicator.addClass('connected-available');
