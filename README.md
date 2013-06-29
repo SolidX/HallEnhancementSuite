@@ -6,11 +6,11 @@ A small utility used by the nice folks over at OTSS to happyify their daily Hall
    - Automatic greentexting _(neato!)_
    - 'SFW' Mode _(don't want no one seeing all those nasty gifs, now)_
    - Message Minimization _(I didn't want to read that anyway)_
-
+   - Pivotal Tracker Story Linking _(because copy/paste is really that hard)_
+   
 ---
 
 #### Coming soon:
-   - Pivotal Tracker Story Linking _(because copy/paste is really that hard)_
    - Nonsensification _(don't ask)_
    - OTSS.Alert Integration? _(seriously, don't ask)_
    

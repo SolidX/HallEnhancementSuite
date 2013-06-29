@@ -9,7 +9,7 @@ $("li.hall-listview-li>div.msg").each(function() {
 	
 	//Pivotal Tracker links
 	var ptRegex = /\[PT:\s?([0-9]+)\]/ig; //This will work but I think it's cumbersome to type.
-	var modified = trimmedText.replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1'>PT$1</a>");
+	var modified = trimmedText.replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1' traget='_blank'>PT$1</a>");
 	$(this).html(modified); //TODO: This doesn't support having multiple PT links in 1 message
 	
 	//Green Texting
@@ -42,7 +42,7 @@ $("div#doc").on("DOMNodeInserted", "li.hall-listview-li", function(evt) {
 	
 	//Pivotal Tracker links
 	var ptRegex = /\[PT:\s?([0-9]+)\]/ig; //This will work but I think it's cumbersome to type.
-	var processed = message.html().replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1'>PT$1</a>");
+	var processed = message.html().replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1' target='_blank'>PT$1</a>");
 	message.html(processed); //TODO: This doesn't support having multiple PT links in 1 message
 	
 	//Green Texting
@@ -94,5 +94,5 @@ $("a#hes-sfw-mode").on("click", function(evt) {
 /*End Experimental*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.4a");
+console.log("Loaded Hall Enhancement Suite 0.42a");
 
