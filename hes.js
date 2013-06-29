@@ -1,12 +1,19 @@
 /*Initialize for currently displayed messages*/
 //Message Minimization
 $('li.hall-listview-li>cite').not('.hes-msg-minimizer').css("display", "inline").css("padding-left", "3px");
-$('li.hall-listview-li>cite').not('.hes-msg-minimizer').addClass('hes-msg-minimizer');
 $('li.hall-listview-li>cite').not('.hes-msg-minimizer').before("<span class='hes-msg-minimizer-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
+$('li.hall-listview-li>cite').not('.hes-msg-minimizer').addClass('hes-msg-minimizer');
 
-//Green Texting
 $("li.hall-listview-li>div.msg").each(function() {
-	if ($(this).text().trim()[0] == '>') {
+	var trimmedText = $(this).html().trim();
+	
+	//Pivotal Tracker links
+	var ptRegex = /\[PT:\s?([0-9]+)\]/ig; //This will work but I think it's cumbersome to type.
+	var modified = trimmedText.replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1'>PT$1</a>");
+	$(this).html(modified); //TODO: This doesn't support having multiple PT links in 1 message
+	
+	//Green Texting
+	if (trimmedText[0] == '>') {
 		$(this).css("color", "#789922").css("font-family", "Courier New");
 	}
 });
@@ -32,6 +39,11 @@ $("div#doc").on("DOMNodeInserted", "li.hall-listview-li", function(evt) {
 		speaker.css("display", "inline").css("padding-left", "3px");
 		speaker.before("<span class='hes-msg-minimizer-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
 	}
+	
+	//Pivotal Tracker links
+	var ptRegex = /\[PT:\s?([0-9]+)\]/ig; //This will work but I think it's cumbersome to type.
+	var processed = message.html().replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1'>PT$1</a>");
+	message.html(processed); //TODO: This doesn't support having multiple PT links in 1 message
 	
 	//Green Texting
 	if (message.text().trim()[0] == '>') {
