@@ -1,55 +1,90 @@
-/*Initialize for currently displayed messages*/
-//Message Minimization
-$('li.hall-listview-li>cite').not('.hes-msg-minimizer').css("display", "inline").css("padding-left", "3px");
-$('li.hall-listview-li>cite').not('.hes-msg-minimizer').before("<span class='hes-msg-minimizer-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
-$('li.hall-listview-li>cite').not('.hes-msg-minimizer').addClass('hes-msg-minimizer');
-
-$("li.hall-listview-li>div.msg").each(function() {
-	var trimmedText = $(this).html().trim();
+//Determine if item is currently in viewport
+//From http://upshots.org/javascript/jquery-test-if-element-is-in-viewport-visible-on-screen
+$.fn.isOnScreen = function(){
 	
-	//Pivotal Tracker links
-	var ptRegex = /\[PT:\s?([0-9]+)\]/ig; //This will work but I think it's cumbersome to type.
-	var modified = trimmedText.replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1' traget='_blank'>PT$1</a>");
-	$(this).html(modified); //TODO: This doesn't support having multiple PT links in 1 message
+	var win = $(window);
 	
-	//Green Texting
-	if (trimmedText[0] == '>') {
-		$(this).css("color", "#789922").css("font-family", "Courier New");
-	}
-});
+	var viewport = {
+		top : win.scrollTop(),
+		left : win.scrollLeft()
+	};
+	viewport.right = viewport.left + win.width();
+	viewport.bottom = viewport.top + win.height();
+	
+	var bounds = this.offset();
+    bounds.right = bounds.left + this.outerWidth();
+    bounds.bottom = bounds.top + this.outerHeight();
+	
+    return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+	
+};
 
-//SFW Mode (hides images)
-$("div.navbar>ul.nav.btn-group.pull-right").prepend("<li><a class='btn' id='hes-sfw-mode' data-toggle='tipsy' original-title='Click to toggle SFW mode.'><div class='presence connected-busy'><i class='i'></i></div>SFW Mode</a></li>");
+/*Initialize HES*/
+//Only Enhance visible messages in viewport
+lazyEnhanceMessages();
+$("div.hall-listview-viewport").scroll(function(){ lazyEnhanceMessages(); }); //TODO: Find a better selector for this
+
+//Add SFW Mode to all open rooms
+$("div.navbar>ul.nav.btn-group.pull-right").each(function() { addSFWModeButton($(this)); });
 /*End HES Initialization*/
 
 /*Handle New Messages*/
-//Add Message minimization feature
 $("div#doc").on('click', "span.hes-msg-minimizer-toggle", function(evt) {
+	//On message minimizer click
 	$(this).parent().find("div.msg").toggle();
 });
 
-$("div#doc").on("DOMNodeInserted", "li.hall-listview-li", function(evt) {
-	var speaker = $(this).children('cite');
-	var message = $(this).children('div.msg');
-	var embdimg = $(this).children('a.image-embed');
-	
-	//Message minimization
-	if (speaker.length > 0 && !speaker.is(".hes-msg-minimizer")){
-		speaker.addClass('hes-msg-minimizer');
-		speaker.css("display", "inline").css("padding-left", "3px");
-		speaker.before("<span class='hes-msg-minimizer-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
-	}
-	
-	//Pivotal Tracker links
-	var ptRegex = /\[PT:\s?([0-9]+)\]/ig; //This will work but I think it's cumbersome to type.
-	var processed = message.html().replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1' target='_blank'>PT$1</a>");
-	message.html(processed); //TODO: This doesn't support having multiple PT links in 1 message
-	
-	//Green Texting
-	if (message.text().trim()[0] == '>') {
-		message.css("color", "#789922").css("font-family", "Courier New");
-	}
+$("div#doc").on("DOMNodeInserted", "div.HallsShow", function(evt) {
+	//When a new room is opened
+	addSFWModeButton($(this).find("div.navbar>ul.nav.btn-group.pull-right"));
+	lazyEnhanceMessages();
 });
+
+$("div#doc").on("DOMNodeInserted", "li.hall-listview-li", function(evt) {
+	//When a new message is recieved
+	enhanceHallMessage($(this));
+});
+
+function enhanceHallMessage(hallLI) {
+	if (!hallLI.is(".hes-enhanced-msg")) {
+		var speaker = hallLI.children('cite');
+		var message = hallLI.children('div.msg');
+		var embdimg = hallLI.children('a.image-embed');
+		
+		//Message minimization
+		if (speaker.length > 0 && !speaker.is(".hes-msg-minimizer")){
+			speaker.addClass('hes-msg-minimizer');
+			speaker.css("display", "inline").css("padding-left", "3px");
+			speaker.before("<span class='hes-msg-minimizer-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
+		}
+		
+		//Pivotal Tracker links
+		var ptRegex = /\[PT:\s?([0-9]+)\]/ig;
+		while (ptRegex.test(message.html())) {
+			var replaced = message.html().replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1' target='_blank'>PT$1</a>");
+			message.html(replaced);
+		}
+		
+		//Green Texting
+		if (message.text().trim()[0] == '>') {
+			message.css("color", "#789922").css("font-family", "Courier New");
+		}
+		
+		hallLI.addClass("hes-enhanced-msg");
+	}
+}
+function addSFWModeButton(hallNav) {
+	if (hallNav.has("a.hes-sfw-mode").length == 0) {
+	hallNav.prepend("<li><a class='btn hes-sfw-mode' data-toggle='tipsy' original-title='Click to toggle SFW mode.'><div class='presence connected-busy'><i class='i'></i></div>SFW Mode</a></li>");
+	}
+}
+function lazyEnhanceMessages() {
+	$("li.hall-listview-li:visible").not(".hes-enhanced-msg").filter(function(index) {
+		return $(this).isOnScreen();
+	}).each(function() {
+		enhanceHallMessage($(this));
+	});
+}
 /*End new Message Event Handler*/
 
 /*Support Functionality*/
@@ -64,7 +99,7 @@ $(document).on("keypress", function(evt) {
 });
 
 //SFW mode
-$("a#hes-sfw-mode").on("click", function(evt) {
+$("a.hes-sfw-mode").on("click", function(evt) {
 	evt.stopPropagation();
 	var indicator = $(this).children('div');
 	$('li.hall-listview-li>a.image-embed').toggle();
@@ -80,19 +115,6 @@ $("a#hes-sfw-mode").on("click", function(evt) {
 });
 /*End Support Functionality*/
 
-/*Experimental*/
-//add image expando
-// $('li.hall-listview-li>a.image-embed>img').css("max-height", "50px"); //thumbnail mode
-// $('li.hall-listview-li>a.image-embed').after("<span class='hes-imgexpando' style='display: inline; cursor: pointer;'><img src='http://i.imgur.com/6nlkn2b.png' title='click to show image preview.' height='25' /></span>");
-// $('li.hall-listview-li>a.image-embed').hide();
-// $("span.hes-imgexpando").on("click", function(evt) {
-	// var large = $(this).prev().find('img').css('max-height', '').css('height', '90%').css('margin-left:', 'auto').css('margin-right', 'auto');
-	// $("div#hesOverlay").html(large.html());
-	// console.log(large.html());
-	// $("div#hesOverlay").fadeIn();
-// });
-/*End Experimental*/
-
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.42a");
+console.log("Loaded Hall Enhancement Suite 0.5");
 
