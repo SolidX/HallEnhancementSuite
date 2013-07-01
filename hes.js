@@ -1,3 +1,12 @@
+// ==UserScript==
+// @name        Hall Enhancement Suite
+// @namespace   http://leetnet.com
+// @description Various new features for Hall.com.
+// @include     https://hall.com/*
+// @version     0.5
+// @grant       none
+// ==/UserScript==
+
 //Determine if item is currently in viewport
 //From http://upshots.org/javascript/jquery-test-if-element-is-in-viewport-visible-on-screen
 $.fn.isOnScreen = function(){

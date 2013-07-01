@@ -18,7 +18,8 @@ A small utility used by the nice folks over at OTSS to happyify their daily Hall
 
 #### How To Use
 
-Right now, the easiest way is to copy/paste the code into your console on the Hall page.
+The easiest way to install the HES is to add it as a user script on GreaseMonkey or something similar. This will automatically load the HES every time you visit the Hall website.
+If your browser doesn't support user scripts (or if you only want to load it once), copy/paste the code into your browser's console on the Hall page.
 Alternatively, copy/paste the lastest version of the code into a bookmark, surrounded by:
 ```javascript
 javascript:(function(){
