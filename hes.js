@@ -76,7 +76,21 @@ function enhanceHallMessage(hallLI) {
 		
 		//Green Texting
 		if (message.text().trim()[0] == '>') {
-			message.css("color", "#789922").css("font-family", "Courier New");
+			if (!message.is("pre")) {
+				message.css("color", "#789922").css("font-family", "Courier New");
+			} else {		
+				var lines = message.children("code").first().html().split("\n");
+				var output = "";
+				
+				for (var i = 0; i < lines.length; i++) {
+					if (lines[i].indexOf("&gt;") == 0)
+						output += "<span style='color: #789922;'>" + lines[i] + "</span>\n";
+					else
+						output += lines[i] + "\n";
+				}
+				
+				message.children("code").first().html(output);
+			}
 		}
 		
 		hallLI.addClass("hes-enhanced-msg");
@@ -125,5 +139,5 @@ $("a.hes-sfw-mode").on("click", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.511");
+console.log("Loaded Hall Enhancement Suite 0.512");
 
