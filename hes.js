@@ -57,7 +57,7 @@ $("div#doc").on("DOMNodeInserted", "li.hall-listview-li", function(evt) {
 function enhanceHallMessage(hallLI) {
 	if (!hallLI.is(".hes-enhanced-msg")) {
 		var speaker = hallLI.children('cite');
-		var message = hallLI.children('div.msg');
+		var message = hallLI.children('.msg');
 		var embdimg = hallLI.children('a.image-embed');
 		
 		//Message minimization (disabled)
@@ -125,5 +125,5 @@ $("a.hes-sfw-mode").on("click", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.51");
+console.log("Loaded Hall Enhancement Suite 0.511");
 
