@@ -60,15 +60,15 @@ function enhanceHallMessage(hallLI) {
 		var message = hallLI.children('div.msg');
 		var embdimg = hallLI.children('a.image-embed');
 		
-		//Message minimization
-		if (speaker.length > 0 && !speaker.is(".hes-msg-minimizer")){
-			speaker.addClass('hes-msg-minimizer');
-			speaker.css("display", "inline").css("padding-left", "3px");
-			speaker.before("<span class='hes-msg-minimizer-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
-		}
+		//Message minimization (disabled)
+		// if (speaker.length > 0 && !speaker.is(".hes-msg-minimizer")){
+			// speaker.addClass('hes-msg-minimizer');
+			// speaker.css("display", "inline").css("padding-left", "3px");
+			// speaker.before("<span class='hes-msg-minimizer-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
+		// }
 		
 		//Pivotal Tracker links
-		var ptRegex = /\[PT:\s?([0-9]+)\]/ig;
+		var ptRegex = /\[?PT:\s?([0-9]+)\]?/ig;
 		while (ptRegex.test(message.html())) {
 			var replaced = message.html().replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1' target='_blank'>PT$1</a>");
 			message.html(replaced);
@@ -125,5 +125,5 @@ $("a.hes-sfw-mode").on("click", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.5");
+console.log("Loaded Hall Enhancement Suite 0.51");
 
