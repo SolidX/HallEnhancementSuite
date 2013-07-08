@@ -68,9 +68,9 @@ function enhanceHallMessage(hallLI) {
 		// }
 		
 		//Pivotal Tracker links
-		var ptRegex = /\[?PT:\s?([0-9]+)\]?/ig;
+		var ptRegex = /\[?PT:?\s?([0-9]+)\]?/ig;
 		while (ptRegex.test(message.html())) {
-			var replaced = message.html().replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1' target='_blank'>PT$1</a>");
+			var replaced = message.html().replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1' target='_blank' title='Pivotal Tracker Story'>PT|$1</a>");
 			message.html(replaced);
 		}
 		
