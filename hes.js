@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.5
+// @version     0.52
 // @grant       none
 // ==/UserScript==
 
@@ -45,6 +45,7 @@ $("div#doc").on('click', "span.hes-msg-minimizer-toggle", function(evt) {
 
 $("div#doc").on("DOMNodeInserted", "div.HallsShow", function(evt) {
 	//When a new room is opened
+	evt.stopPropagation();
 	addSFWModeButton($(this).find("div.navbar>ul.nav.btn-group.pull-right"));
 	lazyEnhanceMessages();
 });
@@ -98,7 +99,7 @@ function enhanceHallMessage(hallLI) {
 }
 function addSFWModeButton(hallNav) {
 	if (hallNav.has("a.hes-sfw-mode").length == 0) {
-	hallNav.prepend("<li><a class='btn hes-sfw-mode' data-toggle='tipsy' original-title='Click to toggle SFW mode.'><div class='presence connected-busy'><i class='i'></i></div>SFW Mode</a></li>");
+		hallNav.prepend("<li><a class='btn hes-sfw-mode' data-toggle='tipsy' original-title='Click to toggle SFW mode.'><div class='presence connected-busy'><i class='i'></i></div>SFW Mode</a></li>");
 	}
 }
 function lazyEnhanceMessages() {
@@ -125,8 +126,11 @@ $(document).on("keypress", function(evt) {
 $("a.hes-sfw-mode").on("click", function(evt) {
 	evt.stopPropagation();
 	var indicator = $(this).children('div');
-	$('li.hall-listview-li>a.image-embed').toggle();
-	$('li.hall-listview-li>a.video_embed').toggle();
+	var header = $(this).closest('div.app-page-hd'); //Room Header
+	var body = header.next(); //Room Messages
+	body.find("li.hall-listview-li>a.image-embed").toggle();
+	body.find('li.hall-listview-li>a.video_embed').toggle();
+	
 	if (indicator.is('.connected-busy')) {
 		indicator.removeClass('connected-busy');
 		indicator.addClass('connected-available');
@@ -139,5 +143,5 @@ $("a.hes-sfw-mode").on("click", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.512");
+console.log("Loaded Hall Enhancement Suite 0.52");
 
