@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.52
+// @version     0.53
 // @grant       none
 // ==/UserScript==
 
@@ -53,6 +53,11 @@ $("div#doc").on("DOMNodeInserted", "div.HallsShow", function(evt) {
 $("div#doc").on("DOMNodeInserted", "li.hall-listview-li", function(evt) {
 	//When a new message is recieved
 	enhanceHallMessage($(this));
+	
+	//MGS Alert
+	if ($(this).has("img.emojicon[title=':bangbang:']").length > 0) {
+		soundManager.play("hes-mgs-alert"); //TODO: Will need to be throttled in future.
+	}
 });
 
 function enhanceHallMessage(hallLI) {
@@ -140,8 +145,17 @@ $("a.hes-sfw-mode").on("click", function(evt) {
 	}
 	return false;
 });
+
+//MGS Alert
+soundManager.createSound({
+	id:"hes-mgs-alert",
+	url:"http://alpha.leetneet.com/mgs-alert.mp3",
+	autoLoad:!1,
+	autoPlay:!1,
+	volume:80
+});
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.52");
+console.log("Loaded Hall Enhancement Suite 0.53");
 
