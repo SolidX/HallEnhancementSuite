@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.53
+// @version     0.54
 // @grant       none
 // ==/UserScript==
 
@@ -99,6 +99,12 @@ function enhanceHallMessage(hallLI) {
 			}
 		}
 		
+		//IRC style me command
+		if (!message.is("pre") && message.text().trim().indexOf("/me") == 0) {
+			message.html(speaker.text() + message.text().substring(3));
+			message.css('color', '#b15ab1');
+		}
+		
 		hallLI.addClass("hes-enhanced-msg");
 	}
 }
@@ -139,7 +145,7 @@ $("a.hes-sfw-mode").on("click", function(evt) {
 	if (indicator.is('.connected-busy')) {
 		indicator.removeClass('connected-busy');
 		indicator.addClass('connected-available');
-	} else{
+	} else {
 		indicator.removeClass('connected-available');
 		indicator.addClass('connected-busy');
 	}
@@ -157,5 +163,5 @@ soundManager.createSound({
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.53");
+console.log("Loaded Hall Enhancement Suite 0.54");
 
