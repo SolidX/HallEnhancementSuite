@@ -99,10 +99,16 @@ function enhanceHallMessage(hallLI) {
 			}
 		}
 		
-		//IRC style me command
-		if (!message.is("pre") && message.text().trim().indexOf("/me") == 0) {
-			message.html(speaker.text() + message.text().substring(3));
-			message.css('color', '#b15ab1');
+		//IRC style commands
+		if (!message.is("pre")) {
+			if (message.text().trim().indexOf("/me ") == 0) {
+				message.html(speaker.text() + message.text().substring(3));
+				message.css('color', '#b15ab1');
+			}
+			if (message.text().trim().indexOf("/slap ") == 0) {
+				message.html(speaker.text() + " slaps " + message.text().substring(5) + " around a bit with a large trout");
+				message.css('color', '#b15ab1');
+			}
 		}
 		
 		hallLI.addClass("hes-enhanced-msg");
