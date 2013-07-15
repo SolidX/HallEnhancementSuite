@@ -101,12 +101,13 @@ function enhanceHallMessage(hallLI) {
 		
 		//IRC style commands
 		if (!message.is("pre")) {
-			if (message.text().trim().indexOf("/me ") == 0) {
-				message.html(speaker.text() + message.text().substring(3));
+			var msgtxt = message.text().trim();
+			if (msgtxt.indexOf("/me ") == 0) {
+				message.html(speaker.text() + msgtxt.substring(3));
 				message.css('color', '#b15ab1');
 			}
-			if (message.text().trim().indexOf("/slap ") == 0) {
-				message.html(speaker.text() + " slaps " + message.text().substring(5) + " around a bit with a large trout");
+			if (msgtxt.indexOf("/slap ") == 0) {
+				message.html(speaker.text() + " slaps " + msgtxt.substring(5) + " around a bit with a large trout");
 				message.css('color', '#b15ab1');
 			}
 		}
