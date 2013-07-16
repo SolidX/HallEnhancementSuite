@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.53
+// @version     0.6
 // @grant       none
 // ==/UserScript==
 
@@ -70,6 +70,7 @@ function enhanceHallMessage(hallLI) {
 		var speaker = hallLI.children('cite');
 		var message = hallLI.children('.msg');
 		var embdimg = hallLI.children('a.image-embed');
+		var msgtxt = message.text().trim();
 		
 		//Message minimization (disabled)
 		// if (speaker.length > 0 && !speaker.is(".hes-msg-minimizer")){
@@ -86,7 +87,7 @@ function enhanceHallMessage(hallLI) {
 		}
 		
 		//Green Texting
-		if (message.text().trim()[0] == '>') {
+		if (msgtxt[0] == '>' && msgtxt[1] != '>') {
 			if (!message.is("pre")) {
 				message.css("color", "#789922").css("font-family", "Courier New");
 			} else {		
@@ -106,7 +107,6 @@ function enhanceHallMessage(hallLI) {
 		
 		//IRC style commands
 		if (!message.is("pre")) {
-			var msgtxt = message.text().trim();
 			if (msgtxt.indexOf("/me ") == 0) {
 				message.html(speaker.text() + msgtxt.substring(3));
 				message.css('color', '#b15ab1');
@@ -166,5 +166,5 @@ $("a.hes-sfw-mode").on("click", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.53");
+console.log("Loaded Hall Enhancement Suite 0.6");
 
