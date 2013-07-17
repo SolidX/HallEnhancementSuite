@@ -97,7 +97,9 @@ function enhanceHallMessage(hallLI) {
 					"url": "http://aorist.co/stuff/story/" + id,
 					"dataType": "xml",
 					"success": function(data, status, jqXHR) {
-						$("#pt-link-" + guid).text(jqXHR.responseXML.querySelector("story > name").textContent);
+						var nameNode = jqXHR.responseXML.querySelector("story > name");
+						if (nameNode)
+							$("#pt-link-" + guid).text(nameNode.textContent);
 					}
 				});
 				
