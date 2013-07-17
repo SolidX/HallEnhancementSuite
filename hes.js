@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.62
+// @version     0.61
 // @grant       none
 // ==/UserScript==
 
@@ -132,7 +132,7 @@ function lazyEnhanceMessages() {
 		enhanceHallMessage($(this));
 	});
 }
-(unsafeWindow || window).toggleSFWMode = function(button) {
+function toggleSFWMode(button) {
 	var indicator = button.children('div');
 	var header = button.closest('div.app-page-hd'); //Room Header
 	var body = header.next(); //Room Messages
@@ -163,4 +163,5 @@ $(document).on("keypress", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.62");
+console.log("Loaded Hall Enhancement Suite 0.61");
+
