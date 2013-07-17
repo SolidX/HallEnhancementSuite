@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.63
+// @version     0.70a
 // @grant       none
 // ==/UserScript==
 
@@ -37,6 +37,14 @@ $.fn.isOnScreen = function(){
  * http://benalman.com/about/license/
  */
 (function(b,c){var $=b.jQuery||b.Cowboy||(b.Cowboy={}),a;$.throttle=a=function(e,f,j,i){var h,d=0;if(typeof f!=="boolean"){i=j;j=f;f=c}function g(){var o=this,m=+new Date()-d,n=arguments;function l(){d=+new Date();j.apply(o,n)}function k(){h=c}if(i&&!h){l()}h&&clearTimeout(h);if(i===c&&m>e){l()}else{if(f!==true){h=setTimeout(i?k:l,i===c?e-m:e)}}}if($.guid){g.guid=j.guid=j.guid||$.guid++}return g};$.debounce=function(d,e,f){return f===c?a(d,e,false):a(d,f,e!==false)}})(this);
+
+// http://stackoverflow.com/a/2117523
+function generateGUID() { 
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+		return v.toString(16);
+	});
+}
 
 /*Initialize HES*/
 //Only Enhance visible messages in viewport
@@ -80,9 +88,22 @@ function enhanceHallMessage(hallLI) {
 		// }
 		
 		//Pivotal Tracker links
-		var ptRegex = /\b\[?PT:?\s?([0-9]+)\]?/ig;
-		while (ptRegex.test(message.html())) {
-			var replaced = message.html().replace(ptRegex, "<a href='https://www.pivotaltracker.com/story/show/$1' target='_blank' title='Pivotal Tracker Story'>PT|$1</a>");
+		var ptRegex = /\b\[?PT:?\s?([0-9]+)\]?/gi;
+		if (ptRegex.test(message.html())) {
+			var replaced = message.html().replace(ptRegex, function(match, id) {	
+				var guid = generateGUID();
+				
+				$.ajax({
+					"url": "http://aorist.co/stuff/story/" + id,
+					"dataType": "xml",
+					"success": function(data, status, jqXHR) {
+						$("#pt-link-" + guid).text(jqXHR.responseXML.querySelector("story > name").textContent);
+					}
+				});
+				
+				return "<a id='pt-link-" + guid + "' href='https://www.pivotaltracker.com/story/show/" + id + "' " +
+												  "target='_blank' title='Pivotal Tracker Story'>PT|" + id + "</a>";
+			});
 			message.html(replaced);
 		}
 		
@@ -166,5 +187,5 @@ $("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.63");
+console.log("Loaded Hall Enhancement Suite 0.70a");
 
