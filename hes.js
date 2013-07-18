@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.54
+// @version     0.63
 // @grant       none
 // ==/UserScript==
 
@@ -48,19 +48,19 @@ $("div.navbar>ul.nav.btn-group.pull-right").each(function() { addSFWModeButton($
 /*End HES Initialization*/
 
 /*Handle New Messages*/
-$("div#doc").on('click', "span.hes-msg-minimizer-toggle", function(evt) {
+$("#HallViewContent").on('click', "span.hes-msg-minimizer-toggle", function(evt) {
 	//On message minimizer click
 	$(this).parent().find("div.msg").toggle();
 });
 
-$("div#doc").on("DOMNodeInserted", "div.HallsShow", function(evt) {
+$("#HallViewContent").on("DOMNodeInserted", "div.HallsShow", function(evt) {
 	//When a new room is opened
 	evt.stopPropagation();
 	addSFWModeButton($(this).find("div.navbar>ul.nav.btn-group.pull-right"));
 	lazyEnhanceMessages();
 });
 
-$("div#doc").on("DOMNodeInserted", "li.hall-listview-li", function(evt) {
+$("#HallViewContent").on("DOMNodeInserted", "li.hall-listview-li", function(evt) {
 	//When a new message is recieved
 	enhanceHallMessage($(this));
 	
@@ -151,7 +151,7 @@ $(document).on("keypress", function(evt) {
 });
 
 //SFW mode
-$("a.hes-sfw-mode").on("click", function(evt) {
+$("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 	evt.stopPropagation();
 	var indicator = $(this).children('div');
 	var header = $(this).closest('div.app-page-hd'); //Room Header
@@ -180,5 +180,5 @@ soundManager.createSound({
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.54");
+console.log("Loaded Hall Enhancement Suite 0.63");
 
