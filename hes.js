@@ -90,6 +90,17 @@ function enhanceHallMessage(hallLI) {
 			message.html(replaced);
 		}
 		
+		//OppsGiffer™
+		if (message.has("a").length > 0) {
+			message.children("a").each(function(index) {
+				var href = $(this).attr('href');
+				if (href.lastIndexOf(".gif") == href.length - 4) {
+					$(this).addClass('image-embed');
+					$(this).html("<img src='" + href + "' style='vertical-align: bottom;' onload='$(this).trigger(\"embedPhotoLoaded\")' />");
+				}
+			});
+		}
+		
 		//Green Texting
 		if (message.text().trim()[0] == '>') {
 			if (!message.is("pre")) {
