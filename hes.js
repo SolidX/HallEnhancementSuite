@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.61
+// @version     0.54
 // @grant       none
 // ==/UserScript==
 
@@ -127,7 +127,7 @@ function enhanceHallMessage(hallLI) {
 }
 function addSFWModeButton(hallNav) {
 	if (hallNav.has("a.hes-sfw-mode").length == 0) {
-		hallNav.prepend("<li><a class='btn hes-sfw-mode' data-toggle='tipsy' original-title='Click to toggle SFW mode.' onclick='toggleSFWMode($(this)); return false;'><div class='presence connected-busy'><i class='i'></i></div>SFW Mode</a></li>");
+		hallNav.prepend("<li><a class='btn hes-sfw-mode' data-toggle='tipsy' original-title='Click to toggle SFW mode.'><div class='presence connected-busy'><i class='i'></i></div>SFW Mode</a></li>");
 	}
 }
 function lazyEnhanceMessages() {
@@ -136,22 +136,6 @@ function lazyEnhanceMessages() {
 	}).each(function() {
 		enhanceHallMessage($(this));
 	});
-}
-function toggleSFWMode(button) {
-	var indicator = button.children('div');
-	var header = button.closest('div.app-page-hd'); //Room Header
-	var body = header.next(); //Room Messages
-	body.find("li.hall-listview-li>a.image-embed").toggle();
-	body.find('li.hall-listview-li>a.video_embed').toggle();
-	
-	if (indicator.is('.connected-busy')) {
-		indicator.removeClass('connected-busy');
-		indicator.addClass('connected-available');
-	} else {
-		indicator.removeClass('connected-available');
-		indicator.addClass('connected-busy');
-	}
-	return false;
 }
 /*End new Message Event Handler*/
 
@@ -166,6 +150,25 @@ $(document).on("keypress", function(evt) {
 	}
 });
 
+//SFW mode
+$("a.hes-sfw-mode").on("click", function(evt) {
+	evt.stopPropagation();
+	var indicator = $(this).children('div');
+	var header = $(this).closest('div.app-page-hd'); //Room Header
+	var body = header.next(); //Room Messages
+	body.find("li.hall-listview-li>a.image-embed").toggle();
+	body.find('li.hall-listview-li>a.video_embed').toggle();
+	
+	if (indicator.is('.connected-busy')) {
+		indicator.removeClass('connected-busy');
+		indicator.addClass('connected-available');
+	} else {
+		indicator.removeClass('connected-available');
+		indicator.addClass('connected-busy');
+	}
+	return false;
+});
+
 //MGS Alert
 soundManager.createSound({
 	id:"hes-mgs-alert",
@@ -177,5 +180,5 @@ soundManager.createSound({
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.61");
+console.log("Loaded Hall Enhancement Suite 0.54");
 
