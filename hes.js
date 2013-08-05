@@ -94,7 +94,7 @@ function enhanceHallMessage(hallLI) {
 				var guid = generateGUID();
 				
 				$.ajax({
-					"url": "http://aorist.co/stuff/story/" + id,
+					"url": "https://aorist.co/stuff/story/" + id,
 					"dataType": "xml",
 					"success": function(data, status, jqXHR) {
 						var nameNode = jqXHR.responseXML.querySelector("story > name");
