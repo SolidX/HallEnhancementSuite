@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.70a
+// @version     0.71a
 // @grant       none
 // ==/UserScript==
 
@@ -110,22 +110,11 @@ function enhanceHallMessage(hallLI) {
 		}
 		
 		//Green Texting
-		if (msgtxt[0] == '>' && msgtxt[1] != '>') {
-			if (!message.is("pre")) {
-				message.css("color", "#789922").css("font-family", "Courier New");
-			} else {		
-				var lines = message.children("code").first().html().split("\n");
-				var output = "";
-				
-				for (var i = 0; i < lines.length; i++) {
-					if (lines[i].indexOf("&gt;") == 0)
-						output += "<span style='color: #789922;'>" + lines[i] + "</span>\n";
-					else
-						output += lines[i] + "\n";
-				}
-				
-				message.children("code").first().html(output);
-			}
+		var gRegex = /(?:^|\s)&gt;[^\s](.*)$/gm;
+		if (gRegex.test(message.html())) {
+			var melem = message.html().indexOf("\n") >= 0 ? message.children("code") : message;
+			var greplaced = melem.html().replace(gRegex, '<span style="color: #789922; font-family: monospace;">$&</span>');
+			melem.html(greplaced);
 		}
 		
 		//IRC style commands
@@ -189,5 +178,4 @@ $("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.70a");
-
+console.log("Loaded Hall Enhancement Suite 0.71a");
