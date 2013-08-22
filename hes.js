@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.71a
+// @version     0.72a
 // @grant       none
 // ==/UserScript==
 
@@ -88,7 +88,7 @@ function enhanceHallMessage(hallLI) {
 		// }
 		
 		//Pivotal Tracker links
-		var ptRegex = /\b\[?PT:?\s?([0-9]+)\]?/gi;
+		var ptRegex = /(?!>)\bPT:?\s?([0-9]+)(?!<)\b/gim;
 		if (ptRegex.test(message.html())) {
 			var replaced = message.html().replace(ptRegex, function(match, id) {	
 				var guid = generateGUID();
@@ -99,12 +99,12 @@ function enhanceHallMessage(hallLI) {
 					"success": function(data, status, jqXHR) {
 						var nameNode = jqXHR.responseXML.querySelector("story > name");
 						if (nameNode)
-							$("#pt-link-" + guid).text(nameNode.textContent);
+							$("#pt-link-" + guid).attr("title", nameNode.textContent).css({"color": "#9952CC", "border-bottom": "1px dotted #9952CC"});
 					}
 				});
 				
 				return "<a id='pt-link-" + guid + "' href='https://www.pivotaltracker.com/story/show/" + id + "' " +
-												  "target='_blank' title='Pivotal Tracker Story'>PT|" + id + "</a>";
+												  "target='_blank' title='Pivotal Tracker Story'>" + match + "</a>";
 			});
 			message.html(replaced);
 		}
@@ -178,4 +178,4 @@ $("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.71a");
+console.log("Loaded Hall Enhancement Suite 0.72a");
