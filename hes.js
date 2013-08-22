@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.72a
+// @version     0.73a
 // @grant       none
 // ==/UserScript==
 
@@ -99,7 +99,7 @@ function enhanceHallMessage(hallLI) {
 					"success": function(data, status, jqXHR) {
 						var nameNode = jqXHR.responseXML.querySelector("story > name");
 						if (nameNode)
-							$("#pt-link-" + guid).attr("title", nameNode.textContent).css({"color": "#9952CC", "border-bottom": "1px dotted #9952CC"});
+							$("#pt-link-" + guid).attr("title", nameNode.textContent).css({"color": "#9952CC", "border-bottom": "1px dotted #9952CC", "font": "bold normal medium monospace"});
 					}
 				});
 				
@@ -110,7 +110,7 @@ function enhanceHallMessage(hallLI) {
 		}
 		
 		//Green Texting
-		var gRegex = /(?:^|\s)&gt;[^\s](.*)$/gm;
+		var gRegex = /\B&gt;(?!\s).*$/gm;
 		if (gRegex.test(message.html())) {
 			var melem = message.html().indexOf("\n") >= 0 ? message.children("code") : message;
 			var greplaced = melem.html().replace(gRegex, '<span style="color: #789922; font-family: monospace;">$&</span>');
@@ -178,4 +178,4 @@ $("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.72a");
+console.log("Loaded Hall Enhancement Suite 0.73a");
