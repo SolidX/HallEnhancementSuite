@@ -117,8 +117,8 @@ function enhanceHallMessage(hallLI) {
 			melem.html(greplaced);
 		}
 		
-		//IRC style commands
 		if (!message.is("pre")) {
+			//IRC style commands
 			if (msgtxt.indexOf("/me ") == 0) {
 				message.html(speaker.text() + msgtxt.substring(3));
 				message.css('color', '#b15ab1');
@@ -126,6 +126,12 @@ function enhanceHallMessage(hallLI) {
 			if (msgtxt.indexOf("/slap ") == 0) {
 				message.html(speaker.text() + " slaps " + msgtxt.substring(5) + " around a bit with a large trout");
 				message.css('color', '#b15ab1');
+			}
+			
+			//Conditional Emoji Resizing -- if a message only contains an emoji
+			if (message.text().length == 0 && message.has("img.emojicon").length == 1) {
+				var emoji = message.children("img.emojicon");
+				emoji.removeClass("emoticon emojicon").removeAttr("height").removeAttr("width");
 			}
 		}
 		
