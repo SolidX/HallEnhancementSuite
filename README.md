@@ -27,4 +27,10 @@ javascript:(function(){
 })()
 ```
 
+---
+
+#### How To Contribute
+
+When adding a feature, branch off of master and name your branch after your feature. Do not update the version number. That will be updated upon merging your completed feature / branch back in to master. Finally, and most importantly, have fun!
+
 #####Coming soon: Chrome Plugin, maybe?
