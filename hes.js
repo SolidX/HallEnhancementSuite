@@ -213,8 +213,10 @@ $("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 });
 
 function generateImageEmbed(imgURL){
-	var img = $(document.createElement('img')).attr({src: imgURL, onload: "$(this).trigger('embedPhotoLoaded')"})
-	var a = $(document.createElement('a')).attr({target: '_blank', href: imgURL, class: 'image-embed'}).append(img);
+	var img = $('<img>').attr({src: imgURL}).on("load",function(){
+		$(this).trigger('embedPhotoLoaded');
+	});
+	var a = $('<a>').attr({target: '_blank', href: imgURL, class: 'image-embed'}).append(img);
 	return a;
 }
 /*End Support Functionality*/
