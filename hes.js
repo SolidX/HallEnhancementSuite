@@ -46,6 +46,20 @@ function generateGUID() {
 	});
 }
 
+//This abomination from http://stackoverflow.com/a/4301991
+function urlExists(url, callback){
+  $.ajax({
+    type: 'HEAD',
+    url: url,
+    success: function(){
+      callback(true);
+    },
+    error: function() {
+      callback(false);
+    }
+  });
+}
+
 /*Initialize HES*/
 //Only Enhance visible messages in viewport
 lazyEnhanceMessages();
@@ -130,8 +144,24 @@ function enhanceHallMessage(hallLI) {
 			
 			//Conditional Emoji Resizing -- if a message only contains an emoji
 			if (message.text().length == 0 && message.has("img.emojicon").length == 1) {
+				//for previously loaded things
 				var emoji = message.children("img.emojicon");
 				emoji.removeClass("emoticon emojicon").removeAttr("height").removeAttr("width");
+			} else {
+				//for new messages
+				//forgive the horrible abuse of AJAX
+				//also we could extend the hall emojicon set here in theory.
+				var msgtxtLength = msgtxt.length;
+				if (msgtxtLength > 3 && msgtxt[0] == ':' && msgtxt[msgtxtLength - 1] == ':') {
+					//Should leverage memoization eventually
+					var potentialURL = 'https://hall.com/images/embed/emojicons/' + msgtxt.substring(1, msgtxt.length - 1) + '.png';
+					
+					//if url exists
+					urlExists(potentialURL, function(doIt) {
+						if (doIt)
+							message.html(generateImageEmbed(potentialURL).html()); //This can probably be optimized.
+					});
+				}
 			}
 		}
 		
@@ -181,6 +211,12 @@ $("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 	}
 	return false;
 });
+
+function generateImageEmbed(imgURL){
+	var img = $(document.createElement('img')).attr({src: imgURL, onload: "$(this).trigger('embedPhotoLoaded')"})
+	var a = $(document.createElement('a')).attr({target: '_blank', href: imgURL, class: 'image-embed'}).append(img);
+	return a;
+}
 /*End Support Functionality*/
 
 //Confirm handiwork
