@@ -69,7 +69,7 @@ $("#HallViewContent").on("DOMNodeInserted", "div.HallsShow", function(evt) {
 });
 
 $("#HallViewContent").on("DOMNodeInserted", "li.hall-listview-li", function(evt) {
-	//When a new message is recieved
+	//When a new message is received
 	enhanceHallMessage($(this));
 });
 
@@ -183,5 +183,5 @@ $("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 });
 /*End Support Functionality*/
 
-//Confirm handywork
+//Confirm handiwork
 console.log("Loaded Hall Enhancement Suite 0.73a");
