@@ -131,25 +131,11 @@ function enhanceHallMessage(hallLI) {
 			}
 			
 			//Conditional Emoji Resizing -- if a message only contains an emoji
-			if (message.text().length == 0 && message.has("img.emojicon").length == 1) {
-				//for previously loaded things
-				var emoji = message.children("img.emojicon");
-				emoji.removeClass("emoticon emojicon").removeAttr("height").removeAttr("width");
+			if (msgtxt == message.children("span.emojicon").attr("title") || msgtxt.indexOf()) {
+				//for previously loaded messages
+				message.children("span.emojicon").css({"height": "64px", "width": "64px", "background-size": "cover"});
 			} else {
-				//for new messages
-				//forgive the horrible abuse of AJAX
-				//also we could extend the hall emojicon set here in theory.
-				var msgtxtLength = msgtxt.length;
-				if (msgtxtLength > 3 && msgtxt[0] == ':' && msgtxt[msgtxtLength - 1] == ':') {
-					//Should leverage memoization eventually
-					var potentialURL = 'https://hall.com/images/embed/emojicons/' + msgtxt.substring(1, msgtxt.length - 1) + '.png';
-					
-					//if url exists
-					urlExists(potentialURL, function(doIt) {
-						if (doIt)
-							message.html(generateImageEmbed(potentialURL).html()); //This can probably be optimized.
-					});
-				}
+				//TODO: for new messages (not parsed by backbone yet)
 			}
 		}
 		
