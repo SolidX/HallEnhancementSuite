@@ -70,11 +70,6 @@ $("div.navbar>ul.nav.btn-group.pull-right").each(function() { addSFWModeButton($
 /*End HES Initialization*/
 
 /*Handle New Messages*/
-$("#HallViewContent").on('click', "span.hes-msg-minimizer-toggle", function(evt) {
-	//On message minimizer click
-	$(this).parent().find("div.msg").toggle();
-});
-
 $("#HallViewContent").on("DOMNodeInserted", "div.HallsShow", function(evt) {
 	//When a new room is opened
 	evt.stopPropagation();
@@ -93,13 +88,6 @@ function enhanceHallMessage(hallLI) {
 		var message = hallLI.children('.msg');
 		var embdimg = hallLI.children('a.image-embed');
 		var msgtxt = message.text().trim();
-		
-		//Message minimization (disabled)
-		// if (speaker.length > 0 && !speaker.is(".hes-msg-minimizer")){
-			// speaker.addClass('hes-msg-minimizer');
-			// speaker.css("display", "inline").css("padding-left", "3px");
-			// speaker.before("<span class='hes-msg-minimizer-toggle' title='Toggle Comment' style='cursor: pointer; font-weight: bold; color: #9CA6AF;'>[&plusmn;]</span>");
-		// }
 		
 		//Pivotal Tracker links
 		var ptRegex = /(?!>)\bPT:?\s?([0-9]+)(?!<)\b/gim;
