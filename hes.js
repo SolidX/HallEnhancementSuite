@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.73a
+// @version     0.74
 // @grant       none
 // ==/UserScript==
 
@@ -45,6 +45,9 @@ function generateGUID() {
 		return v.toString(16);
 	});
 }
+
+//pardon my intrusion
+$("<style type='text/css'> .shared_image { display: none; } </style>").appendTo("head");
 
 /*Initialize HES*/
 //Only Enhance visible messages in viewport
@@ -178,4 +181,4 @@ $("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.73a");
+console.log("Loaded Hall Enhancement Suite 0.74");
