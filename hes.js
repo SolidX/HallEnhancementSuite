@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.75
+// @version     0.75.1
 // @grant       none
 // ==/UserScript==
 
@@ -134,7 +134,7 @@ function enhanceHallMessage(hallLI) {
 				message.css('color', '#b15ab1');
 			}
 			if (msgtxt.indexOf("/slap ") == 0) {
-				message.html(speaker.text() + " slaps " + msgtxt.substring(5) + " around a bit with a large trout");
+				message.html(speaker.text() + " slaps " + msgtxt.substring(6) + " around a bit with a large trout");
 				message.css('color', '#b15ab1');
 			}
 		}
