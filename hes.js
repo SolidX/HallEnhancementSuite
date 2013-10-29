@@ -47,7 +47,7 @@ function generateGUID() {
 }
 
 //pardon my intrusion
-$("<style type='text/css'> .shared_image { display: none; } .hes-spoiler { background-color: black; color: black; } .hes-spoiler:hover { color: white; } </style>").appendTo("head");
+$("<style type='text/css'> .shared_image { display: none; } .hes-spoiler { background-color: black; color: black; } .hes-spoiler:hover { color: white; } .hes-spoiler * { color: black; } </style>").appendTo("head");
 
 /*Initialize HES*/
 //Only Enhance visible messages in viewport
@@ -113,7 +113,7 @@ function enhanceHallMessage(hallLI) {
 		}
 		
 		//Green Texting
-		var gRegex = /\B&gt;(?!\s).*$/gm;
+		var gRegex = /(?:\s|^)&gt;(?!(?:&gt;)|\s).+$/gm;
 		if (gRegex.test(message.html())) {
 			var melem = message.html().indexOf("\n") >= 0 ? message.children("code") : message;
 			var greplaced = melem.html().replace(gRegex, '<span style="color: #789922; font-family: monospace;">$&</span>');
