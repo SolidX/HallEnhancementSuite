@@ -3,7 +3,7 @@
 // @namespace   http://leetnet.com
 // @description Various new features for Hall.com.
 // @include     https://hall.com/*
-// @version     0.74
+// @version     0.75
 // @grant       none
 // ==/UserScript==
 
@@ -47,7 +47,7 @@ function generateGUID() {
 }
 
 //pardon my intrusion
-$("<style type='text/css'> .shared_image { display: none; } </style>").appendTo("head");
+$("<style type='text/css'> .shared_image { display: none; } .hes-spoiler { background-color: black; color: black; } .hes-spoiler:hover { color: white; } </style>").appendTo("head");
 
 /*Initialize HES*/
 //Only Enhance visible messages in viewport
@@ -120,6 +120,13 @@ function enhanceHallMessage(hallLI) {
 			melem.html(greplaced);
 		}
 		
+		//Spoilers
+		var sRegex = /\[spoiler\](.+?)\[\/spoiler\]/gmi;
+		if (sRegex.test(message.html())) {
+			var melon = message.html().indexOf("\n") >= 0 ? message.children("code") : message;
+			melon.html(melon.html().replace(sRegex, '<span class="hes-spoiler">$1</span>'));
+		}
+		
 		//IRC style commands
 		if (!message.is("pre")) {
 			if (msgtxt.indexOf("/me ") == 0) {
@@ -181,4 +188,4 @@ $("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.74");
+console.log("Loaded Hall Enhancement Suite 0.75");
