@@ -47,7 +47,7 @@ function generateGUID() {
 }
 
 //pardon my intrusion
-$("<style type='text/css'> .shared_image { display: none; } .hes-spoiler { background-color: black; color: black; } .hes-spoiler:hover { color: white; } .hes-spoiler * { color: black; } </style>").appendTo("head");
+$("<style type='text/css'> .shared_image { display: none; } .hes-spoiler { background-color: black; color: black; } .hes-spoiler:hover { color: white; } .hes-spoiler * { color: black; } img { max-width: 100% !important; } </style>").appendTo("head");
 
 /*Initialize HES*/
 //Only Enhance visible messages in viewport
