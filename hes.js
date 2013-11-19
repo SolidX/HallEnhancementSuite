@@ -47,7 +47,7 @@ function generateGUID() {
 }
 
 //pardon my intrusion
-$("<style type='text/css'> .shared_image { display: none; } .hes-spoiler { background-color: black; color: black; } .hes-spoiler:hover { color: white; } .hes-spoiler * { color: black; } img { max-width: 67vw !important; max-height: 67vh !important; } </style>").appendTo("head");
+$("<style type='text/css'> .shared_image { display: none; } .hes-spoiler { background-color: black; color: black; } .hes-spoiler:hover { color: white; } .hes-spoiler * { color: black; } img { max-width: 67vw !important; max-height: 67vh !important; } .image-embed { height: auto !important; } </style>").appendTo("head");
 
 /*Initialize HES*/
 //Only Enhance visible messages in viewport
@@ -188,4 +188,4 @@ $("#HallViewContent").on("click", "a.hes-sfw-mode", function(evt) {
 /*End Support Functionality*/
 
 //Confirm handywork
-console.log("Loaded Hall Enhancement Suite 0.75");
+console.log("Loaded Hall Enhancement Suite 0.75.1");
